@@ -6,7 +6,7 @@ import requests
 import webbrowser
 import random
 
-class Client():
+class Client:
     def __init__(self, client_id, client_secret):
         self.__client_id = client_id
         self.__client_secret = client_secret
@@ -107,7 +107,7 @@ class Client():
 
 
 
-class State():
+class State:
     def __init__(self):
         self.__state = self.generate_state()
 
@@ -121,7 +121,7 @@ class State():
     def validate_state(self, current_state):
         return self.__state == current_state
 
-class Oauth2_token():
+class Oauth2_token:
     def __init__(self, j: dict):
         self.__access_token = j['access_token']
         self.__refresh_token = j['refresh_token']
