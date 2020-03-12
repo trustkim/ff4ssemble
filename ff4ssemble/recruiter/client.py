@@ -74,7 +74,7 @@ class Client:
     def loads_content(self, sample_path_prefix, alliance_info, str):
         content = str
         try:
-            f = open(sample_path_prefix+'Recruiting_sample.txt', 'r', encoding='cp949')
+            f = open(sample_path_prefix+'Recruiting_sample.txt', 'r', encoding='utf-8')
             while True:
                 line = f.readline()
                 if len(line) == 0:
