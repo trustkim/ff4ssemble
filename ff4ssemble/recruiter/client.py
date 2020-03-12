@@ -103,7 +103,7 @@ class Client:
             print(response_body) # TODO response_body json 형식인지확인
             webbrowser.open(self.parse_and_check_json(response_body)["message"]["result"]["articleUrl"])
         else:
-            print("Error Code: " + res_code)
+            print("Error Code: " + str(res_code))
 
 
 
