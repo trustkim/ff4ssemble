@@ -37,7 +37,7 @@ class Client:
             f.close()
 
             # 웹브라우저를 통해 네이버 아이디 로그인 성공 후 code 를 입력
-            webbrowser.open('naver_login.html')
+            webbrowser.open_new('naver_login.html')
             print("네이버 아이디로 로그인하여 리디렉트된 callback uri에서 code 값을 입력하시오")
             return input()
         else:
@@ -101,7 +101,7 @@ class Client:
         if res_code == 200:
             response_body = response.text
             print(response_body) # TODO response_body json 형식인지확인
-            webbrowser.open(self.parse_and_check_json(response_body)["message"]["result"]["articleUrl"])
+            webbrowser.open_new(self.parse_and_check_json(response_body)["message"]["result"]["articleUrl"])
         else:
             print("Error Code: " + str(res_code))
 
