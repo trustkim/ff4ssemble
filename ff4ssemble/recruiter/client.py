@@ -28,7 +28,7 @@ class Client:
         j = json.loads(json_str)    # j dict
         if 'error' in j:
             print(f"Error!: {j['error']}, {j['error_description']}")
-            return j
+            return None
         else:
             return j
 
@@ -37,7 +37,8 @@ class Client:
         url = ("https://nid.naver.com/oauth2.0/authorize?"
             f"response_type=code&client_id={self.__client_id}"
             f"&redirect_uri={self.__redirect_uri}"
-            f"&state={self.__state.get_state()}")
+            f"&state={self.__state.get_state()}"
+        )
         response = request.urlopen(request.Request(url))
         res_code = response.getcode()
 
@@ -55,14 +56,8 @@ class Client:
             print("Error Code: " + res_code)
             return None
 
-    def grant_oauth2_token(self):
-        """ 접근 토큰을 발급 """
-        url = ("https://nid.naver.com/oauth2.0/token?"
-            f"client_id={self.__client_id}"
-            f"&client_secret={self.__client_secret}"
-            f"&grant_type=authorization_code"
-            f"&state={self.__state.get_state()}"
-            f"&code={self.__authorization_code}")
+    def request_token_works(self, url):
+        """ 토큰 관련 작업을 요청 """
         response = request.urlopen(request.Request(url))
         res_code = response.getcode()
 
@@ -73,7 +68,26 @@ class Client:
         else:
             print("Error Code: " + res_code)
 
-    # def refresh_token(self):  # TODO 토큰 갱신 메서드 추가하기
+    def grant_oauth2_token(self):
+        """ 접근 토큰을 발급 """
+        url = ("https://nid.naver.com/oauth2.0/token?"
+            f"client_id={self.__client_id}"
+            f"&client_secret={self.__client_secret}"
+            f"&grant_type=authorization_code"
+            f"&state={self.__state.get_state()}"
+            f"&code={self.__authorization_code}"
+        )
+        self.request_token_works(url)
+
+    def refresh_token(self):  # TODO 토큰 갱신 메서드 추가하기
+        """ 접근 토큰을 갱신  """
+        url = ("https://nid.naver.com/oauth2.0/token?"
+            "grant_type=refresh_token"
+            f"&client_id={self.__client_id}"
+            f"&client_secret={self.__client_secret}"
+            f"&refresh_token={self.__token._Oauth2_token__refresh_token}"    # TODO 토큰 클래스에 getter 만들어서 받기
+        )
+        self.request_token_works(url)
 
     def login_oauth2_naver(self):
         """ 네이버 아이디로 로그인 메서드 """
@@ -84,7 +98,7 @@ class Client:
         else:
             print("code 입력 완료!")
 
-        self.__access_token = self.grant_oauth2_token()
+        self.grant_oauth2_token()
 
     def formatting_alliance_info(self, alliance_info):
         """ loads_content 메서드에서 호출, 모집글 양식에 변수 부분 포매팅,
@@ -114,7 +128,7 @@ class Client:
     def post_naver_cafe(self, sample_path_prefix,
             alliance_info, clubid, menuid, subject):
         """ 네이버 카페 API로 모집글 포스트 """
-        header = "Bearer " + self.__token._Oauth2_token__access_token
+        header = "Bearer " + self.__token._Oauth2_token__access_token   # TODO 토큰 클래스에서 getter 만들어서 받기
         url = ("https://openapi.naver.com/v1/cafe/"
             + clubid + "/menu/" + menuid + "/articles")
         subject = parse.quote(subject)
@@ -160,10 +174,11 @@ class State:
 class Oauth2_token:
     """ 네이버 아이디 로그인 결과 취득하는 접근 토큰 클래스 """
     def __init__(self, j: dict):
-        self.__access_token = j['access_token']
-        self.__refresh_token = j['refresh_token']
-        self.__token_type = j['token_type']
-        self.__expires_in = j['expires_in']
+        if j != None:
+            self.__access_token = j['access_token']
+            self.__refresh_token = j['refresh_token']
+            self.__token_type = j['token_type']
+            self.__expires_in = j['expires_in']
 
 if __name__ == "__main__":
     print("==== /recruiter/request_naver_login.py 테스트 ====")
