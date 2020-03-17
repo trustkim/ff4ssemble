@@ -10,7 +10,8 @@ ff4ssemble은 넷마블이 운영하는 모바일 게임 마블 퓨처파이트�
 프로젝트가 좀 더 진행되면 설치 방법, 사용법, 상세 코드 설명 적어볼게요.<br>
 
 <img src="https://raw.githubusercontent.com/trustkim/ff4ssemble/master/B2V_mk3.png"
-width="50%" height="50%" title="본비빌 화이팅!" alt="본비빌 화이팅!"></img><br/>
+width="50%" height="50%" title="본비빌 화이팅!" alt="본비빌 화이팅!">
+</img><br/>
 
 # 참고 목록
 * 마퓨파 공식 네이버 카페, https://cafe.naver.com/futurefight/
